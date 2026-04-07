@@ -1,0 +1,55 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class MyQueue:
+    def __init__(self):
+        self.first = None
+        self.last = None
+        self._size = 0
+
+    def push(self, x):
+        new_node = Node(x)
+        if self.last:
+            self.last.next = new_node
+        self.last = new_node
+        if not self.first:
+            self.first = new_node
+        self._size += 1
+
+    def pop(self):
+        if self.empty(): return None
+        val = self.first.data
+        self.first = self.first.next
+        if not self.first:
+            self.last = None
+        self._size -= 1
+        return val
+
+    def peek(self):
+        return self.first.data if self.first else None
+
+    def empty(self):
+        return self._size == 0
+
+    def size(self):
+        return self._size
+    
+class MyStack:
+    def __init__(self):
+        self.queue = MyQueue()
+
+    def push(self, x: int):
+        self.queue.push(x)
+        for _ in range(self.queue.size() - 1):
+            self.queue.push(self.queue.pop())
+
+    def pop(self):
+        return self.queue.pop()
+
+    def top(self) -> int:
+        return self.queue.peek()
+
+    def empty(self) -> bool:
+        return self.queue.empty()
