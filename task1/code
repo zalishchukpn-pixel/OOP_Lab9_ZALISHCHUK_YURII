@@ -1,0 +1,54 @@
+class Node:
+    def __init__(self,data,next):
+        self.data = data
+        self.next = next
+
+class MyStack:
+    def __init__(self, node=None):
+        if node is None:
+            self.node = Node(None,None)
+        else:
+            self.node = node
+        
+    def push(self, x):
+        new_node = Node(x,self.node)
+        self.node = new_node
+        
+    def pop(self):
+        if not self.empty():
+            result =  self.node.data
+            self.node = self.node.next
+            return result
+        return None
+        
+    def peek(self):
+        if not self.empty():
+            return self.node.data
+        return None
+        
+    def empty(self):
+        return self.node.data == None
+
+class MyQueue:
+    def __init__(self):
+        self.input_stack = MyStack()
+        self.output_stack = MyStack()
+
+    def push(self, x: int) -> None:
+        self.input_stack.push(x)
+
+    def _move_elements(self):
+        if self.output_stack.empty():
+            while not self.input_stack.empty():
+                self.output_stack.push(self.input_stack.pop())
+
+    def pop(self) -> int:
+        self._move_elements()
+        return self.output_stack.pop()
+
+    def peek(self) -> int:
+        self._move_elements()
+        return self.output_stack.peek()
+
+    def empty(self) -> bool:
+        return self.input_stack.empty() and self.output_stack.empty()
